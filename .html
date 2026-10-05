@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft - Diamanten Rechner</title>
+
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --card-bg: #151821;
+            --card-inner: #1c202d;
+            --accent: #00b4d8;
+            --accent-glow: rgba(0, 180, 216, 0.35);
+            --accent-bright: #90e0ef;
+            --text-color: #f1f5f9;
+            --text-muted: #94a3b8;
+            --input-bg: #11131c;
+            --border: #242938;
+            --border-active: #00b4d8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --badge-bg: #1e2638;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 180, 216, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(67, 97, 238, 0.08) 0%, transparent 40%);
+            color: var(--text-color);
+            margin: 0;
+            padding: 30px 15px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 850px;
+            background-color: var(--card-bg);
+            padding: 32px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--border);
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            color: var(--accent-bright);
+            margin: 0;
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 20px var(--accent-glow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-switch {
+            display: flex;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active {
+            background-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2300b4d8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 40px !important;
+        }
+
+        select option {
+            background-color: #151821;
+            color: #fff;
+            padding: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background-color: var(--input-bg);
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        input:focus, select:focus {
+            border-color: var(--border-active);
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .category-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        .category-tab {
+            background-color: var(--card-inner);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .category-tab:hover {
+            color: #fff;
+            border-color: rgba(0, 180, 216, 0.5);
+            background-color: rgba(0, 180, 216, 0.1);
+        }
+
+        .category-tab.active {
+            background-color: rgba(0, 180, 216, 0.18);
+            border-color: var(--accent);
+            color: var(--accent-bright);
+            box-shadow: 0 0 12px rgba(0, 180, 216, 0.2);
+        }
+
+        /* Farbcodierung für die einzelnen Kategorien */
+        .category-tab[data-cat="BAU-MATERIAL"].active {
+            border-color: #d4a373;
+            color: #f1c40f;
+            background-color: rgba(212, 163, 115, 0.2);
+            box-shadow: 0 0 12px rgba(212, 163, 115, 0.3);
+        }
+        .category-tab[data-cat="ERZE"].active {
+            border-color: #00b4d8;
+            color: #90e0ef;
+            background-color: rgba(0, 180, 216, 0.2);
+            box-shadow: 0 0 12px rgba(0, 180, 216, 0.3);
+        }
+        .category-tab[data-cat="Book"].active {
+            border-color: #a855f7;
+            color: #c084fc;
+            background-color: rgba(168, 85, 247, 0.2);
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+        }
+        .category-tab[data-cat="LOCATION"].active {
+            border-color: #10b981;
+            color: #6ee7b7;
+            background-color: rgba(16, 185, 129, 0.2);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+        }
+        .category-tab[data-cat="SONSTIGES"].active {
+            border-color: #f59e0b;
+            color: #fde047;
+            background-color: rgba(245, 158, 11, 0.2);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+        }
+
+        optgroup {
+            background-color: #1a1e2b;
+            color: var(--accent-bright);
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background-color: var(--badge-bg);
+            color: var(--accent-bright);
+            border: 1px solid rgba(0, 180, 216, 0.3);
+            margin-right: 8px;
+        }
+
+        .grid-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .grid-col {
+            flex: 1;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #00b4d8, #0077b6);
+            color: #fff;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 180, 216, 0.45);
+        }
+
+        .btn-secondary {
+            background: var(--card-inner);
+            border: 1px solid var(--border);
+            box-shadow: none;
+            color: var(--text-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--border-active);
+            background: rgba(0, 180, 216, 0.1);
+        }
+
+        .result-card {
+            margin-top: 25px;
+            padding: 24px;
+            background: linear-gradient(135deg, #0f2b48, #163a61);
+            border-radius: 16px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 180, 216, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        .result-card h2 {
+            margin: 0 0 10px 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-value {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--accent-bright);
+            text-shadow: 0 0 25px var(--accent-glow);
+            margin-bottom: 5px;
+        }
+
+        .rate-info {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cart-section {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border);
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .cart-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--accent-bright);
+        }
+
+        .cart-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cart-item {
+            background-color: var(--card-inner);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .cart-item-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .cart-item-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cart-item-price {
+            font-weight: 700;
+            color: var(--accent-bright);
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        @media (max-width: 600px) {
+            .grid-row {
+                flex-direction: column;
+            }
+            .app-container {
+                padding: 20px;
+            }
+            .result-value {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header-bar">
+        <h1>💎 <span id="titleText">Minecraft Diamanten Rechner</span></h1>
+        <div class="lang-switch">
+            <button class="lang-btn active" id="btnDE" onclick="setLanguage('de')">DE 🇩🇪</button>
+            <button class="lang-btn" id="btnEN" onclick="setLanguage('en')">EN 🇬🇧</button>
+        </div>
+    </div>
+
+    <!-- Kategorie Filter -->
+    <div class="category-bar" id="categoryBar"></div>
+
+    <!-- Suche -->
+    <div class="search-box grid-row">
+        <div class="grid-col">
+            <label for="search" id="lblSearch">Item Suchen:</label>
+            <input type="text" id="search" placeholder="z. B. Dirt, Netherite, Elytra..." oninput="filterItems()">
+        </div>
+    </div>
+
+    <!-- Dropdown Item-Auswahl -->
+    <div class="search-box">
+        <label for="itemSelect" id="lblItem">Item auswählen:</label>
+        <select id="itemSelect" onchange="calculate()"></select>
+    </div>
+
+    <!-- Einheiten und Menge -->
+    <div class="grid-row" style="margin-top: 15px;">
+        <div class="grid-col">
+            <label for="unitType" id="lblUnit">Einheit:</label>
+            <select id="unitType" onchange="calculate()">
+                <option value="items" id="optItems">Einzeltitel / Stück</option>
+                <option value="stacks" id="optStacks">Stacks (à 64 Stück)</option>
+            </select>
+        </div>
+        <div class="grid-col">
+            <label for="amount" id="lblAmount">Menge:</label>
+            <input type="number" id="amount" value="1" min="0" step="any" oninput="calculate()">
+        </div>
+    </div>
+
+    <button class="btn btn-secondary" onclick="addToCart()" id="btnAddToCart" style="margin-top: 5px; margin-bottom: 20px;">
+        ➕ Zum Warenkorb hinzufügen
+    </button>
+
+    <!-- Ergebnis Anzeige -->
+    <div class="result-card">
+        <h2 id="lblTotal">Gesamtwert in Diamanten:</h2>
+        <div class="result-value" id="output">0 Dia</div>
+        <div class="rate-info" id="rateInfo">-</div>
+    </div>
+
+    <!-- Warenkorb Sektion -->
+    <div class="cart-section">
+        <div class="cart-header">
+            <h3 id="lblCartTitle">🛒 Warenkorb (Mehrere Items)</h3>
+            <button class="delete-btn" onclick="clearCart()" id="btnClearCart" title="Warenkorb leeren" style="font-size: 0.85rem; padding: 4px 8px; background: rgba(239, 68, 68, 0.1);">
+                🗑️ Leeren
+            </button>
+        </div>
+        <ul class="cart-list" id="cartList"></ul>
+    </div>
+</div>
+
+<script>
+    let currentLang = 'de';
+    let activeCategory = 'ALL';
+    let cart = [];
+
+    const translations = {
+        de: {
+            title: "Minecraft Diamanten Rechner",
+            searchLbl: "Item Suchen:",
+            searchPh: "z. B. Dirt, Netherite, Elytra...",
+            itemLbl: "Item auswählen:",
+            unitLbl: "Einheit:",
+            unitItems: "Einzeltitel / Stück",
+            unitStacks: "Stacks (à 64 Stück)",
+            amountLbl: "Menge:",
+            btnAddToCart: "➕ Zum Warenkorb hinzufügen",
+            totalLbl: "Gesamtwert in Diamanten:",
+            cartTitle: "🛒 Warenkorb (Mehrere Items)",
+            btnClearCart: "🗑️ Leeren",
+            cartEmpty: "Der Warenkorb ist leer",
+            cartTotal: "Warenkorb Gesamt:",
+            rateLbl: "Kurs",
+            perPiece: "Dia pro Stück",
+            categories: {
+                "ALL": "🌐 Alle Items",
+                "BAU-MATERIAL": "🧱 Bau-Material",
+                "ERZE": "⛏️ Erze",
+                "Book": "📚 Bücher",
+                "LOCATION": "📍 Locations",
+                "SONSTIGES": "📦 Sonstiges"
+            }
+        },
+        en: {
+            title: "Minecraft Diamond Calculator",
+            searchLbl: "Search Item:",
+            searchPh: "e.g. Dirt, Netherite, Elytra...",
+            itemLbl: "Select Item:",
+            unitLbl: "Unit:",
+            unitItems: "Single Items / Pcs",
+            unitStacks: "Stacks (64 pcs each)",
+            amountLbl: "Amount:",
+            btnAddToCart: "➕ Add to Cart",
+            totalLbl: "Total Value in Diamonds:",
+            cartTitle: "🛒 Cart (Multiple Items)",
+            btnClearCart: "🗑️ Clear",
+            cartEmpty: "Cart is empty",
+            cartTotal: "Cart Total:",
+            rateLbl: "Rate",
+            perPiece: "Dia per piece",
+            categories: {
+                "ALL": "🌐 All Items",
+                "BAU-MATERIAL": "🧱 Building",
+                "ERZE": "⛏️ Ores",
+                "Book": "📚 Books",
+                "LOCATION": "📍 Locations",
+                "SONSTIGES": "📦 Misc"
+            }
+        }
+    };
+
+    const itemsData = [
+        { name: "Dirt", menge: 128, dia: 1, category: "BAU-MATERIAL" },
+        { name: "Sand", menge: 128, dia: 1, category: "BAU-MATERIAL" },
+        { name: "Cobble", menge: 64, dia: 1, category: "BAU-MATERIAL" },
+        { name: "Deep", menge: 32, dia: 1, category: "BAU-MATERIAL" },
+        { name: "Holz", menge: 32, dia: 1, category: "BAU-MATERIAL" },
+        { name: "Copper", menge: 64, dia: 1, category: "ERZE" },
+        { name: "Lapis", menge: 64, dia: 1, category: "ERZE" },
+        { name: "Redstone", menge: 64, dia: 1, category: "ERZE" },
+        { name: "Kohle", menge: 64, dia: 1, category: "ERZE" },
+        { name: "Iron", menge: 16, dia: 1, category: "ERZE" },
+        { name: "Gold", menge: 12, dia: 1, category: "ERZE" },
+        { name: "Emerald", menge: 8, dia: 1, category: "ERZE" },
+        { name: "Dia", menge: 1, dia: 1, category: "ERZE" },
+        { name: "Netherite", menge: 1, dia: 12, category: "ERZE" },
+        { name: "gunpowder", menge: 32, dia: 1, category: "Book" },
+        { name: "Boneblock", menge: 32, dia: 1, category: "Book" },
+        { name: "fortune 3", menge: 1, dia: 8, category: "Book" },
+        { name: "protection 4", menge: 1, dia: 8, category: "Book" },
+        { name: "basic(Mending, Unbreaking)", menge: 1, dia: 12, category: "Book" },
+        { name: "Village LOCL OOTED", menge: 1, dia: 8, category: "LOCATION" },
+        { name: "Village LOC", menge: 1, dia: 16, category: "LOCATION" },
+        { name: "Trail chamber LOC LOOTED", menge: 1, dia: 16, category: "LOCATION" },
+        { name: "End city LOC LOOTED", menge: 1, dia: 16, category: "LOCATION" },
+        { name: "Trail chamber LOC", menge: 1, dia: 32, category: "LOCATION" },
+        { name: "Ancient city LOC LOOTED", menge: 1, dia: 32, category: "LOCATION" },
+        { name: "End city LOC", menge: 1, dia: 64, category: "LOCATION" },
+        { name: "Ancient city LOC", menge: 1, dia: 128, category: "LOCATION" },
+        { name: "LOW essen", menge: 64, dia: 2, category: "SONSTIGES" },
+        { name: "MID essen", menge: 32, dia: 2, category: "SONSTIGES" },
+        { name: "HIGH essen", menge: 16, dia: 2, category: "SONSTIGES" },
+        { name: "Rocket I", menge: 32, dia: 1, category: "SONSTIGES" },
+        { name: "Gunpowder", menge: 48, dia: 1, category: "SONSTIGES" },
+        { name: "Pfeil", menge: 64, dia: 1, category: "SONSTIGES" },
+        { name: "Enderperlen", menge: 16, dia: 2, category: "SONSTIGES" },
+        { name: "Endertruhe", menge: 1, dia: 16, category: "SONSTIGES" },
+        { name: "Totem", menge: 1, dia: 48, category: "SONSTIGES" },
+        { name: "Dragonhead", menge: 1, dia: 64, category: "SONSTIGES" },
+        { name: "Kopfgeld", menge: 1, dia: 64, category: "SONSTIGES" },
+        { name: "Elytra", menge: 1, dia: 96, category: "SONSTIGES" },
+        { name: "1 Kill", menge: 1, dia: 96, category: "SONSTIGES" }
+    ];
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        document.getElementById('btnDE').classList.toggle('active', lang === 'de');
+        document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+
+        const t = translations[lang];
+        document.getElementById('titleText').innerText = t.title;
+        document.getElementById('lblSearch').innerText = t.searchLbl;
+        document.getElementById('search').placeholder = t.searchPh;
+        document.getElementById('lblItem').innerText = t.itemLbl;
+        document.getElementById('lblUnit').innerText = t.unitLbl;
+        document.getElementById('optItems').innerText = t.unitItems;
+        document.getElementById('optStacks').innerText = t.unitStacks;
+        document.getElementById('lblAmount').innerText = t.amountLbl;
+        document.getElementById('btnAddToCart').innerText = t.btnAddToCart;
+        document.getElementById('lblTotal').innerText = t.totalLbl;
+        document.getElementById('lblCartTitle').innerText = t.cartTitle;
+
+        renderCategories();
+        filterItems();
+        updateCartUI();
+    }
+
+    function renderCategories() {
+        const t = translations[currentLang];
+        const categoryBar = document.getElementById('categoryBar');
+        const categories = ["ALL", "BAU-MATERIAL", "ERZE", "Book", "LOCATION", "SONSTIGES"];
+
+        categoryBar.innerHTML = '';
+        categories.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = `category-tab ${activeCategory === cat ? 'active' : ''}`;
+            btn.dataset.cat = cat;
+            btn.innerHTML = t.categories[cat] || cat;
+            btn.onclick = () => {
+                activeCategory = cat;
+                renderCategories();
+                filterItems();
+            };
+            categoryBar.appendChild(btn);
+        });
+    }
+
+    function populateSelect(list) {
+        const itemSelect = document.getElementById('itemSelect');
+        const t = translations[currentLang];
+        itemSelect.innerHTML = '';
+
+        if (list.length === 0) {
+            const opt = document.createElement('option');
+            opt.innerText = currentLang === 'de' ? 'Keine Items gefunden' : 'No items found';
+            itemSelect.appendChild(opt);
+            calculate();
+            return;
+        }
+
+        const categoryOrder = ["BAU-MATERIAL", "ERZE", "Book", "LOCATION", "SONSTIGES"];
+        
+        categoryOrder.forEach(cat => {
+            const catItems = list.filter(item => item.category === cat);
+            if (catItems.length > 0) {
+                const group = document.createElement('optgroup');
+                group.label = t.categories[cat] || cat;
+                
+                catItems.forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item.name;
+                    opt.innerText = `${item.name} (${item.menge} Stk. = ${item.dia} Dia)`;
+                    group.appendChild(opt);
+                });
+                
+                itemSelect.appendChild(group);
+            }
+        });
+
+        calculate();
+    }
+
+    function filterItems() {
+        const query = document.getElementById('search').value.toLowerCase();
+        const filtered = itemsData.filter(i => {
+            const matchesQuery = i.name.toLowerCase().includes(query) || i.category.toLowerCase().includes(query);
+            const matchesCategory = activeCategory === 'ALL' || i.category === activeCategory;
+            return matchesQuery && matchesCategory;
+        });
+        populateSelect(filtered);
+    }
+
+    function calculate() {
+        const itemSelect = document.getElementById('itemSelect');
+        const selectedName = itemSelect.value;
+        const item = itemsData.find(i => i.name === selectedName);
+        const t = translations[currentLang];
+
+        if (!item) {
+            document.getElementById('output').innerText = '0 Dia';
+            document.getElementById('rateInfo').innerText = '-';
+            return;
+        }
+
+        const unitType = document.getElementById('unitType').value;
+        let amount = parseFloat(document.getElementById('amount').value) || 0;
+
+        let totalItems = amount;
+        if (unitType === 'stacks') {
+            totalItems = amount * 64;
+        }
+
+        const pricePerItem = item.dia / item.menge;
+        const totalDias = totalItems * pricePerItem;
+
+        document.getElementById('output').innerText = `${totalDias.toLocaleString(currentLang === 'de' ? 'de-DE' : 'en-US', { maximumFractionDigits: 2 })} Dia`;
+        document.getElementById('rateInfo').innerText = `${t.rateLbl}: ${item.menge} Stk. = ${item.dia} Dia (${pricePerItem.toFixed(4)} ${t.perPiece})`;
+    }
+
+    function addToCart() {
+        const itemSelect = document.getElementById('itemSelect');
+        const selectedName = itemSelect.value;
+        const item = itemsData.find(i => i.name === selectedName);
+        if (!item) return;
+
+        const unitType = document.getElementById('unitType').value;
+        let amount = parseFloat(document.getElementById('amount').value) || 0;
+        if (amount <= 0) return;
+
+        let totalItems = unitType === 'stacks' ? amount * 64 : amount;
+        const pricePerItem = item.dia / item.menge;
+        const totalDias = totalItems * pricePerItem;
+
+        cart.push({
+            id: Date.now(),
+            name: item.name,
+            amount: amount,
+            unitType: unitType === 'stacks' ? 'Stack(s)' : 'Stk.',
+            dias: totalDias
+        });
+
+        updateCartUI();
+    }
+
+    function removeFromCart(id) {
+        cart = cart.filter(item => item.id !== id);
+        updateCartUI();
+    }
+
+    function clearCart() {
+        cart = [];
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        const cartList = document.getElementById('cartList');
+        const t = translations[currentLang];
+
+        if (cart.length === 0) {
+            cartList.innerHTML = `<li style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 15px;">${t.cartEmpty}</li>`;
+            return;
+        }
+
+        cartList.innerHTML = '';
+        let sumDias = 0;
+
+        cart.forEach(item => {
+            sumDias += item.dias;
+            const li = document.createElement('li');
+            li.className = 'cart-item';
+            li.innerHTML = `
+                <div>
+                    <div class="cart-item-title">${item.name}</div>
+                    <div class="cart-item-sub">${item.amount} ${item.unitType}</div>
+                </div>
+                <div class="cart-item-right">
+                    <span class="cart-item-price">${item.dias.toLocaleString(currentLang === 'de' ? 'de-DE' : 'en-US', { maximumFractionDigits: 2 })} Dia</span>
+                    <button class="delete-btn" onclick="removeFromCart(${item.id})" title="Remove">✕</button>
+                </div>
+            `;
+            cartList.appendChild(li);
+        });
+
+        const totalLi = document.createElement('li');
+        totalLi.style.cssText = 'display: flex; justify-content: space-between; padding: 12px 16px; background: rgba(0, 180, 216, 0.15); border-radius: 10px; font-weight: 700; margin-top: 5px; border: 1px solid var(--accent);';
+        totalLi.innerHTML = `
+            <span>${t.cartTotal}</span>
+            <span style="color: var(--accent-bright);">${sumDias.toLocaleString(currentLang === 'de' ? 'de-DE' : 'en-US', { maximumFractionDigits: 2 })} Dia</span>
+        `;
+        cartList.appendChild(totalLi);
+    }
+
+    setLanguage('de');
+</script>
+
+</body>
+</html>
