@@ -477,6 +477,10 @@
             <select id="unitType" onchange="calculate()">
                 <option value="items" id="optItems">Einzeltitel / Stück</option>
                 <option value="stacks" id="optStacks">Stacks (à 64 Stück)</option>
+                <option value="hotbar" id="optHotbar">Hotbar (9 Stacks)</option>
+                <option value="chest" id="optChest">Kiste (27 Stacks)</option>
+                <option value="inv" id="optInv">Inventar / Inv (36 Stacks)</option>
+                <option value="double_chest" id="optDoubleChest">Doppelkiste (54 Stacks / 2 Kisten)</option>
             </select>
         </div>
         <div class="grid-col">
@@ -522,6 +526,10 @@
             unitLbl: "Einheit:",
             unitItems: "Einzeltitel / Stück",
             unitStacks: "Stacks (à 64 Stück)",
+            unitHotbar: "Hotbar (9 Stacks)",
+            unitChest: "Kiste (27 Stacks)",
+            unitInv: "Inventar / Inv (36 Stacks)",
+            unitDoubleChest: "Doppelkiste (54 Stacks / 2 Kisten)",
             amountLbl: "Menge:",
             btnAddToCart: "➕ Zum Warenkorb hinzufügen",
             totalLbl: "Gesamtwert in Diamanten:",
@@ -549,6 +557,10 @@
             unitLbl: "Unit:",
             unitItems: "Single Item / Pieces",
             unitStacks: "Stacks (64 pcs each)",
+            unitHotbar: "Hotbar (9 Stacks)",
+            unitChest: "Single Chest (27 Stacks)",
+            unitInv: "Inventory (36 Stacks)",
+            unitDoubleChest: "Double Chest (54 Stacks / 2 Chests)",
             amountLbl: "Amount:",
             btnAddToCart: "➕ Add to Cart",
             totalLbl: "Total Value in Diamonds:",
@@ -604,9 +616,9 @@
         { id: "feather_4", name: { de: "Federfall IV Buch (Feather Falling IV)", en: "Feather Falling IV Book" }, menge: 1, dia: 8, category: "Book" },
 
         // TRÄNKE (POTIONS)
-        { id: "potion_fire_res", name: { de: "Trank der Feuerresistenz (Fire Res)", en: "Potion of Fire Resistance" }, menge: 1, dia: 1, category: "TRAENKE" },
-        { id: "potion_strength", name: { de: "Trank der Stärke (Strength)", en: "Potion of Strength" }, menge: 1, dia: 1, category: "TRAENKE" },
-        { id: "potion_speed", name: { de: "Trank der Schnelligkeit (Speed)", en: "Potion of Speed" }, menge: 1, dia: 1, category: "TRAENKE" },
+        { id: "potion_fire_res", name: { de: "Trank der Feuerresistenz (Fire Res)", en: "Potion of Fire Resistance" }, menge: 1, dia: 4, category: "TRAENKE" },
+        { id: "potion_strength", name: { de: "Trank der Stärke I (Strength I)", en: "Potion of Strength I" }, menge: 1, dia: 8, category: "TRAENKE" },
+        { id: "potion_speed", name: { de: "Trank der Schnelligkeit I (Speed I)", en: "Potion of Speed I" }, menge: 1, dia: 6, category: "TRAENKE" },
 
         // LOCATIONS & KOORDINATEN
         { id: "stronghold_loc", name: { de: "Endportal-Festung Kords (Stronghold)", en: "Stronghold Coords" }, menge: 1, dia: 32, category: "LOCATION" },
@@ -619,10 +631,10 @@
         { id: "end_city_loc", name: { de: "Endstadt Kords (End City)", en: "End City Coords" }, menge: 1, dia: 64, category: "LOCATION" },
 
         // SONSTIGES & CONSUMABLES
-        { id: "shulker", name: { de: "Shulker-Schale / Kiste (Shulker)", en: "Shulker Shell / Box" }, menge: 1, dia: 1, category: "SONSTIGES" },
-        { id: "ecrystal", name: { de: "Endkristall (End Crystal)", en: "End Crystal" }, menge: 1, dia: 1, category: "SONSTIGES" },
-        { id: "cobweb", name: { de: "Spinnweb (Cobweb)", en: "Cobweb" }, menge: 1, dia: 1, category: "SONSTIGES" },
-        { id: "wind_charge", name: { de: "Windladung (Wind Charge)", en: "Wind Charge" }, menge: 1, dia: 1, category: "SONSTIGES" },
+        { id: "shulker", name: { de: "Shulker-Schale / Kiste (Shulker)", en: "Shulker Shell / Box" }, menge: 1, dia: 4, category: "SONSTIGES" },
+        { id: "ecrystal", name: { de: "Endkristall (End Crystal)", en: "End Crystal" }, menge: 16, dia: 1, category: "SONSTIGES" },
+        { id: "cobweb", name: { de: "Spinnweb (Cobweb)", en: "Cobweb" }, menge: 32, dia: 1, category: "SONSTIGES" },
+        { id: "wind_charge", name: { de: "Windladung (Wind Charge)", en: "Wind Charge" }, menge: 32, dia: 1, category: "SONSTIGES" },
         { id: "low_essen", name: { de: "Essen Niedrig (z. B. Kartoffeln)", en: "Food Low Tier" }, menge: 64, dia: 2, category: "SONSTIGES" },
         { id: "mid_essen", name: { de: "Essen Mittel (z. B. Fleisch)", en: "Food Mid Tier" }, menge: 32, dia: 2, category: "SONSTIGES" },
         { id: "high_essen", name: { de: "Essen Hoch (z. B. Goldene Karotten)", en: "Food High Tier" }, menge: 16, dia: 2, category: "SONSTIGES" },
@@ -667,6 +679,10 @@
         document.getElementById('lblUnit').innerText = t.unitLbl;
         document.getElementById('optItems').innerText = t.unitItems;
         document.getElementById('optStacks').innerText = t.unitStacks;
+        document.getElementById('optHotbar').innerText = t.unitHotbar;
+        document.getElementById('optChest').innerText = t.unitChest;
+        document.getElementById('optInv').innerText = t.unitInv;
+        document.getElementById('optDoubleChest').innerText = t.unitDoubleChest;
         document.getElementById('lblAmount').innerText = t.amountLbl;
         document.getElementById('btnAddToCart').innerText = t.btnAddToCart;
         document.getElementById('lblTotal').innerText = t.totalLbl;
@@ -763,6 +779,14 @@
         let totalItems = amount;
         if (unitType === 'stacks') {
             totalItems = amount * 64;
+        } else if (unitType === 'hotbar') {
+            totalItems = amount * 64 * 9;
+        } else if (unitType === 'chest') {
+            totalItems = amount * 64 * 27;
+        } else if (unitType === 'inv') {
+            totalItems = amount * 64 * 36;
+        } else if (unitType === 'double_chest') {
+            totalItems = amount * 64 * 54;
         }
 
         const pricePerItem = item.dia / item.menge;
@@ -782,7 +806,26 @@
         let amount = parseFloat(document.getElementById('amount').value) || 0;
         if (amount <= 0) return;
 
-        let totalItems = unitType === 'stacks' ? amount * 64 : amount;
+        let totalItems = amount;
+        let unitLabel = currentLang === 'de' ? 'Stk.' : 'pcs.';
+
+        if (unitType === 'stacks') {
+            totalItems = amount * 64;
+            unitLabel = 'Stack(s)';
+        } else if (unitType === 'hotbar') {
+            totalItems = amount * 64 * 9;
+            unitLabel = 'Hotbar(s)';
+        } else if (unitType === 'chest') {
+            totalItems = amount * 64 * 27;
+            unitLabel = currentLang === 'de' ? 'Kiste(n)' : 'Chest(s)';
+        } else if (unitType === 'inv') {
+            totalItems = amount * 64 * 36;
+            unitLabel = 'Inv';
+        } else if (unitType === 'double_chest') {
+            totalItems = amount * 64 * 54;
+            unitLabel = currentLang === 'de' ? 'Doppelkiste(n)' : 'Double Chest(s)';
+        }
+
         const pricePerItem = item.dia / item.menge;
         const totalDias = totalItems * pricePerItem;
 
@@ -790,7 +833,7 @@
             cartId: Date.now(),
             name: item.name,
             amount: amount,
-            unitType: unitType === 'stacks' ? 'Stack(s)' : (currentLang === 'de' ? 'Stk.' : 'pcs.'),
+            unitType: unitLabel,
             dias: totalDias
         });
 
