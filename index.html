@@ -10,16 +10,16 @@
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
 
     <!-- Allgemeine SEO Meta Tags -->
-    <meta name="description" content="Kostenloser Minecraft Diamanten Rechner - Berechne schnell und einfach den Wert von Bau-Materialien, Erzen, Büchern, Standorten und Items in Diamanten.">
-    <meta name="keywords" content="Minecraft, Diamanten Rechner, Diamond Calculator, Minecraft Preise, Trade, Wirtschaft, Minecraft Items">
+    <meta name="description" content="Kostenloser Minecraft Diamanten Rechner - Berechne schnell und einfach den Wert von Bau-Materialien, Erzen, Büchern, Tränken, Standorten und Items in Diamanten.">
+    <meta name="keywords" content="Minecraft, Diamanten Rechner, Diamond Calculator, Minecraft Preise, Trade, Wirtschaft, Minecraft Items, Tränke, Potions">
     <meta name="author" content="Minecraft Community">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0b0c10">
 
-    <!-- Open Graph Meta Tags (für Discord, WhatsApp, Facebook Vorschau) -->
+    <!-- Open Graph Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Minecraft Diamanten Rechner">
-    <meta property="og:description" content="Berechne Werte und Wechselkurse für Minecraft-Items in Diamanten mit Warenkorb und Sprachwechsel.">
+    <meta property="og:description" content="Berechne Werte und Wechselkurse für Minecraft-Items und Tränke in Diamanten mit Warenkorb und Sprachwechsel.">
     <meta property="og:image" content="https://placehold.co/1200x630/0b0c10/00b4d8?text=💎+Minecraft+Diamanten+Rechner">
 
     <!-- Twitter Card Meta Tags -->
@@ -212,6 +212,7 @@
             box-shadow: 0 0 12px rgba(0, 180, 216, 0.2);
         }
 
+        /* Kategorie-Farben */
         .category-tab[data-cat="BAU-MATERIAL"].active {
             border-color: #d4a373;
             color: #f1c40f;
@@ -229,6 +230,12 @@
             color: #c084fc;
             background-color: rgba(168, 85, 247, 0.2);
             box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+        }
+        .category-tab[data-cat="TRAENKE"].active {
+            border-color: #ec4899;
+            color: #f472b6;
+            background-color: rgba(236, 72, 153, 0.2);
+            box-shadow: 0 0 12px rgba(236, 72, 153, 0.3);
         }
         .category-tab[data-cat="LOCATION"].active {
             border-color: #10b981;
@@ -453,7 +460,7 @@
     <div class="search-box grid-row">
         <div class="grid-col">
             <label for="search" id="lblSearch">Item Suchen:</label>
-            <input type="text" id="search" placeholder="z. B. Erde, Tiefenschiefer, Elytra..." oninput="filterItems()">
+            <input type="text" id="search" placeholder="z. B. Erde, Quarz, Trank, Elytra..." oninput="filterItems()">
         </div>
     </div>
 
@@ -510,7 +517,7 @@
         de: {
             title: "Minecraft Diamanten Rechner",
             searchLbl: "Item Suchen:",
-            searchPh: "z. B. Erde, Tiefenschiefer, Elytra...",
+            searchPh: "z. B. Erde, Quarz, Trank, Elytra...",
             itemLbl: "Item auswählen:",
             unitLbl: "Einheit:",
             unitItems: "Einzeltitel / Stück",
@@ -519,95 +526,116 @@
             btnAddToCart: "➕ Zum Warenkorb hinzufügen",
             totalLbl: "Gesamtwert in Diamanten:",
             cartTitle: "🛒 Warenkorb (Mehrere Items)",
-            btnClearCart: "🗑️ Leeren",
-            cartEmpty: "Der Warenkorb ist leer",
-            cartTotal: "Warenkorb Gesamt:",
-            rateLbl: "Kurs",
-            perPiece: "Dia pro Stück",
+            rateLbl: "Wechselkurs",
             pcs: "Stk.",
+            perPiece: "Dia/Stk.",
+            cartEmpty: "Der Warenkorb ist leer.",
+            cartTotal: "Gesamtsumme:",
             categories: {
-                "ALL": "🌐 Alle Items",
-                "BAU-MATERIAL": "🧱 Bau-Material",
-                "ERZE": "⛏️ Erze",
-                "Book": "📚 Bücher & Zauber",
-                "LOCATION": "📍 Locations & Kords",
-                "SONSTIGES": "📦 Sonstiges"
+                ALL: "Alle Items",
+                "BAU-MATERIAL": "🏗️ Bau-Material",
+                ERZE: "💎 Erze",
+                Book: "📚 Bücher",
+                TRAENKE: "🧪 Tränke",
+                LOCATION: "🗺️ Standorte",
+                SONSTIGES: "📦 Sonstiges"
             }
         },
         en: {
             title: "Minecraft Diamond Calculator",
             searchLbl: "Search Item:",
-            searchPh: "e.g. Dirt, Deepslate, Elytra...",
+            searchPh: "e.g. Dirt, Quartz, Potion, Elytra...",
             itemLbl: "Select Item:",
             unitLbl: "Unit:",
-            unitItems: "Single Items / Pcs",
+            unitItems: "Single Item / Pieces",
             unitStacks: "Stacks (64 pcs each)",
             amountLbl: "Amount:",
             btnAddToCart: "➕ Add to Cart",
             totalLbl: "Total Value in Diamonds:",
-            cartTitle: "🛒 Cart (Multiple Items)",
-            btnClearCart: "🗑️ Clear",
-            cartEmpty: "Cart is empty",
-            cartTotal: "Cart Total:",
-            rateLbl: "Rate",
-            perPiece: "Dia per piece",
-            pcs: "pcs.",
+            cartTitle: "🛒 Shopping Cart (Multiple Items)",
+            rateLbl: "Exchange Rate",
+            pcs: "pcs",
+            perPiece: "Dia/pc",
+            cartEmpty: "The cart is empty.",
+            cartTotal: "Grand Total:",
             categories: {
-                "ALL": "🌐 All Items",
-                "BAU-MATERIAL": "🧱 Building Materials",
-                "ERZE": "⛏️ Ores",
-                "Book": "📚 Books & Enchants",
-                "LOCATION": "📍 Locations & Coords",
-                "SONSTIGES": "📦 Misc"
+                ALL: "All Items",
+                "BAU-MATERIAL": "🏗️ Building",
+                ERZE: "💎 Ores",
+                Book: "📚 Books",
+                TRAENKE: "🧪 Potions",
+                LOCATION: "🗺️ Locations",
+                SONSTIGES: "📦 Misc"
             }
         }
     };
 
     const itemsData = [
+        // BAU-MATERIAL
+        { id: "cobble", name: { de: "Bruchstein (Cobblestone)", en: "Cobblestone" }, menge: 64, dia: 1, category: "BAU-MATERIAL" },
+        { id: "deepslate", name: { de: "Tiefenschiefer (Deepslate)", en: "Deepslate" }, menge: 32, dia: 1, category: "BAU-MATERIAL" },
+        { id: "wood", name: { de: "Holz & Stämme (Wood / Logs)", en: "Wood / Logs" }, menge: 32, dia: 1, category: "BAU-MATERIAL" },
         { id: "dirt", name: { de: "Erde (Dirt)", en: "Dirt" }, menge: 128, dia: 1, category: "BAU-MATERIAL" },
         { id: "sand", name: { de: "Sand", en: "Sand" }, menge: 128, dia: 1, category: "BAU-MATERIAL" },
-        { id: "cobble", name: { de: "Bruchstein (Cobble)", en: "Cobblestone" }, menge: 64, dia: 1, category: "BAU-MATERIAL" },
-        { id: "deepslate", name: { de: "Tiefenschiefer (Deepslate)", en: "Deepslate" }, menge: 32, dia: 1, category: "BAU-MATERIAL" },
-        { id: "wood", name: { de: "Holz (Wood / Planks)", en: "Wood / Logs" }, menge: 32, dia: 1, category: "BAU-MATERIAL" },
-        
-        { id: "copper", name: { de: "Kupfer (Copper)", en: "Copper" }, menge: 64, dia: 1, category: "ERZE" },
-        { id: "lapis", name: { de: "Lapis Lazuli", en: "Lapis Lazuli" }, menge: 64, dia: 1, category: "ERZE" },
-        { id: "redstone", name: { de: "Redstone", en: "Redstone" }, menge: 64, dia: 1, category: "ERZE" },
-        { id: "coal", name: { de: "Kohle (Coal)", en: "Coal" }, menge: 64, dia: 1, category: "ERZE" },
-        { id: "iron", name: { de: "Eisen (Iron)", en: "Iron" }, menge: 16, dia: 1, category: "ERZE" },
-        { id: "gold", name: { de: "Gold", en: "Gold" }, menge: 12, dia: 1, category: "ERZE" },
-        { id: "emerald", name: { de: "Smaragd (Emerald)", en: "Emerald" }, menge: 8, dia: 1, category: "ERZE" },
+        { id: "quarz", name: { de: "Quarz (Quartz)", en: "Quartz" }, menge: 64, dia: 1, category: "BAU-MATERIAL" },
+        { id: "glass", name: { de: "Glas (Glass)", en: "Glass" }, menge: 32, dia: 1, category: "BAU-MATERIAL" },
+        { id: "concrete", name: { de: "Beton (Concrete)", en: "Concrete" }, menge: 32, dia: 1, category: "BAU-MATERIAL" },
+
+        // ERZE & ROHSTOFFE
+        { id: "netherite", name: { de: "Netheritbarren (Netherite Ingot)", en: "Netherite Ingot" }, menge: 1, dia: 12, category: "ERZE" },
         { id: "dia", name: { de: "Diamant (Diamond)", en: "Diamond" }, menge: 1, dia: 1, category: "ERZE" },
-        { id: "netherite", name: { de: "Netherit (Netherite)", en: "Netherite Ingot" }, menge: 1, dia: 12, category: "ERZE" },
+        { id: "iron", name: { de: "Eisenbarren (Iron Ingot)", en: "Iron Ingot" }, menge: 16, dia: 1, category: "ERZE" },
+        { id: "gold", name: { de: "Goldbarren (Gold Ingot)", en: "Gold Ingot" }, menge: 12, dia: 1, category: "ERZE" },
+        { id: "emerald", name: { de: "Smaragd (Emerald)", en: "Emerald" }, menge: 8, dia: 1, category: "ERZE" },
+        { id: "copper", name: { de: "Kupferbarren (Copper Ingot)", en: "Copper Ingot" }, menge: 64, dia: 1, category: "ERZE" },
+        { id: "lapis", name: { de: "Lapis Lazuli", en: "Lapis Lazuli" }, menge: 64, dia: 1, category: "ERZE" },
+        { id: "redstone", name: { de: "Redstone-Staub", en: "Redstone Dust" }, menge: 64, dia: 1, category: "ERZE" },
+        { id: "coal", name: { de: "Kohle (Coal)", en: "Coal" }, menge: 64, dia: 1, category: "ERZE" },
 
-        { id: "gunpowder_book", name: { de: "Schwarzpulver (Gunpowder)", en: "Gunpowder" }, menge: 32, dia: 1, category: "Book" },
-        { id: "boneblock", name: { de: "Knochenblock (Bone Block)", en: "Bone Block" }, menge: 32, dia: 1, category: "Book" },
-        { id: "fortune_3", name: { de: "Glück III Buch (Fortune 3)", en: "Fortune III Book" }, menge: 1, dia: 8, category: "Book" },
-        { id: "protection_4", name: { de: "Schutz IV Buch (Protection 4)", en: "Protection IV Book" }, menge: 1, dia: 8, category: "Book" },
-        { id: "basic_mending", name: { de: "Standard-Buch (Mending / Unbreaking)", en: "Basic Book (Mending / Unbreaking)" }, menge: 1, dia: 12, category: "Book" },
+        // BÜCHER
+        { id: "gunpowder_book", name: { de: "Schwarzpulver (Gunpowder Farm)", en: "Gunpowder" }, menge: 32, dia: 1, category: "Book" },
+        { id: "boneblock_book", name: { de: "Knochenblock (Bone Block)", en: "Bone Block" }, menge: 32, dia: 1, category: "Book" },
+        { id: "fortune_3", name: { de: "Glück III Buch (Fortune III)", en: "Fortune III Book" }, menge: 1, dia: 8, category: "Book" },
+        { id: "basic_mending", name: { de: "Standard-Buch (Mending / Haltbarkeit)", en: "Basic Book (Mending / Unbreaking)" }, menge: 1, dia: 12, category: "Book" },
+        { id: "protection_4", name: { de: "Schutz IV Buch (Protection IV)", en: "Protection IV Book" }, menge: 1, dia: 8, category: "Book" },
+        { id: "sharpness_5", name: { de: "Schärfe V Buch (Sharpness V)", en: "Sharpness V Book" }, menge: 1, dia: 12, category: "Book" },
+        { id: "efficiency_5", name: { de: "Effizienz V Buch (Efficiency V)", en: "Efficiency V Book" }, menge: 1, dia: 12, category: "Book" },
+        { id: "looting_3", name: { de: "Plünderung III Buch (Looting III)", en: "Looting III Book" }, menge: 1, dia: 8, category: "Book" },
+        { id: "feather_4", name: { de: "Federfall IV Buch (Feather Falling IV)", en: "Feather Falling IV Book" }, menge: 1, dia: 8, category: "Book" },
 
-        { id: "village_loc_looted", name: { de: "Dorf Kords (Geplündert)", en: "Village Coords (Looted)" }, menge: 1, dia: 8, category: "LOCATION" },
-        { id: "village_loc", name: { de: "Dorf Kords (Unberührt)", en: "Village Coords (Unlooted)" }, menge: 1, dia: 16, category: "LOCATION" },
-        { id: "trial_chamber_looted", name: { de: "Prüfungskammer Kords (Geplündert)", en: "Trial Chamber Coords (Looted)" }, menge: 1, dia: 16, category: "LOCATION" },
-        { id: "end_city_looted", name: { de: "Endstadt Kords (Geplündert)", en: "End City Coords (Looted)" }, menge: 1, dia: 16, category: "LOCATION" },
-        { id: "trial_chamber_loc", name: { de: "Prüfungskammer Kords (Unberührt)", en: "Trial Chamber Coords (Unlooted)" }, menge: 1, dia: 32, category: "LOCATION" },
-        { id: "ancient_city_looted", name: { de: "Antike Stadt Kords (Geplündert)", en: "Ancient City Coords (Looted)" }, menge: 1, dia: 32, category: "LOCATION" },
-        { id: "end_city_loc", name: { de: "Endstadt Kords (Unberührt)", en: "End City Coords (Unlooted)" }, menge: 1, dia: 64, category: "LOCATION" },
-        { id: "ancient_city_loc", name: { de: "Antike Stadt Kords (Unberührt)", en: "Ancient City Coords (Unlooted)" }, menge: 1, dia: 128, category: "LOCATION" },
+        // TRÄNKE (POTIONS)
+        { id: "potion_fire_res", name: { de: "Trank der Feuerresistenz (Fire Res)", en: "Potion of Fire Resistance" }, menge: 1, dia: 1, category: "TRAENKE" },
+        { id: "potion_strength", name: { de: "Trank der Stärke (Strength)", en: "Potion of Strength" }, menge: 1, dia: 1, category: "TRAENKE" },
+        { id: "potion_speed", name: { de: "Trank der Schnelligkeit (Speed)", en: "Potion of Speed" }, menge: 1, dia: 1, category: "TRAENKE" },
 
-        { id: "low_essen", name: { de: "Essen (Niedrig - z. B. Ofenkartoffeln)", en: "Food (Low Tier - e.g. Baked Potatoes)" }, menge: 64, dia: 2, category: "SONSTIGES" },
-        { id: "mid_essen", name: { de: "Essen (Mittel - z. B. Braten/Fleisch)", en: "Food (Mid Tier - e.g. Cooked Meat)" }, menge: 32, dia: 2, category: "SONSTIGES" },
-        { id: "high_essen", name: { de: "Essen (Hoch - z. B. Goldene Karotten)", en: "Food (High Tier - e.g. Golden Carrots)" }, menge: 16, dia: 2, category: "SONSTIGES" },
+        // LOCATIONS & KOORDINATEN
+        { id: "stronghold_loc", name: { de: "Endportal-Festung Kords (Stronghold)", en: "Stronghold Coords" }, menge: 1, dia: 32, category: "LOCATION" },
+        { id: "nether_fortress_loc", name: { de: "Netherfestung Kords (Nether Fortress)", en: "Nether Fortress Coords" }, menge: 1, dia: 24, category: "LOCATION" },
+        { id: "monument_loc", name: { de: "Ozeanmonument Kords (Ocean Monument)", en: "Ocean Monument Coords" }, menge: 1, dia: 64, category: "LOCATION" },
+        { id: "mansion_loc", name: { de: "Waldanwesen Kords (Woodland Mansion)", en: "Woodland Mansion Coords" }, menge: 1, dia: 128, category: "LOCATION" },
+        { id: "trial_chamber_loc", name: { de: "Prüfungskammer Kords (Trial Chamber)", en: "Trial Chamber Coords" }, menge: 1, dia: 32, category: "LOCATION" },
+        { id: "ancient_city_loc", name: { de: "Antike Stadt Kords (Ancient City)", en: "Ancient City Coords" }, menge: 1, dia: 128, category: "LOCATION" },
+        { id: "village_loc", name: { de: "Dorf Kords (Village)", en: "Village Coords" }, menge: 1, dia: 16, category: "LOCATION" },
+        { id: "end_city_loc", name: { de: "Endstadt Kords (End City)", en: "End City Coords" }, menge: 1, dia: 64, category: "LOCATION" },
+
+        // SONSTIGES & CONSUMABLES
+        { id: "shulker", name: { de: "Shulker-Schale / Kiste (Shulker)", en: "Shulker Shell / Box" }, menge: 1, dia: 1, category: "SONSTIGES" },
+        { id: "ecrystal", name: { de: "Endkristall (End Crystal)", en: "End Crystal" }, menge: 1, dia: 1, category: "SONSTIGES" },
+        { id: "cobweb", name: { de: "Spinnweb (Cobweb)", en: "Cobweb" }, menge: 1, dia: 1, category: "SONSTIGES" },
+        { id: "wind_charge", name: { de: "Windladung (Wind Charge)", en: "Wind Charge" }, menge: 1, dia: 1, category: "SONSTIGES" },
+        { id: "low_essen", name: { de: "Essen Niedrig (z. B. Kartoffeln)", en: "Food Low Tier" }, menge: 64, dia: 2, category: "SONSTIGES" },
+        { id: "mid_essen", name: { de: "Essen Mittel (z. B. Fleisch)", en: "Food Mid Tier" }, menge: 32, dia: 2, category: "SONSTIGES" },
+        { id: "high_essen", name: { de: "Essen Hoch (z. B. Goldene Karotten)", en: "Food High Tier" }, menge: 16, dia: 2, category: "SONSTIGES" },
         { id: "rocket_1", name: { de: "Feuerwerksraketen I", en: "Fireworks Tier I" }, menge: 32, dia: 1, category: "SONSTIGES" },
         { id: "gunpowder_misc", name: { de: "Schwarzpulver (Gunpowder)", en: "Gunpowder" }, menge: 48, dia: 1, category: "SONSTIGES" },
-        { id: "arrow", name: { de: "Pfeile (Arrows)", en: "Arrows" }, menge: 64, dia: 1, category: "SONSTIGES" },
-        { id: "enderpearl", name: { de: "Enderperlen (Ender Pearls)", en: "Ender Pearls" }, menge: 16, dia: 2, category: "SONSTIGES" },
-        { id: "enderchest", name: { de: "Endertruhe (Ender Chest)", en: "Ender Chest" }, menge: 1, dia: 16, category: "SONSTIGES" },
-        { id: "totem", name: { de: "Totem der Unsterblichkeit", en: "Totem of Undying" }, menge: 1, dia: 48, category: "SONSTIGES" },
-        { id: "dragonhead", name: { de: "Drachenkopf (Dragon Head)", en: "Dragon Head" }, menge: 1, dia: 64, category: "SONSTIGES" },
-        { id: "bounty", name: { de: "Kopfgeld (Bounty)", en: "Bounty" }, menge: 1, dia: 64, category: "SONSTIGES" },
         { id: "elytra", name: { de: "Elytra (Schwungflügel)", en: "Elytra" }, menge: 1, dia: 96, category: "SONSTIGES" },
-        { id: "kill", name: { de: "1 Spieler Kill", en: "1 Player Kill" }, menge: 1, dia: 96, category: "SONSTIGES" }
+        { id: "dragonhead", name: { de: "Drachenkopf (Dragon Head)", en: "Dragon Head" }, menge: 1, dia: 64, category: "SONSTIGES" },
+        { id: "totem", name: { de: "Totem der Unsterblichkeit", en: "Totem of Undying" }, menge: 1, dia: 48, category: "SONSTIGES" },
+        { id: "pfeil", name: { de: "Pfeile (Arrows)", en: "Arrows" }, menge: 64, dia: 1, category: "SONSTIGES" },
+        { id: "kill", name: { de: "1 Spieler Kill", en: "1 Player Kill" }, menge: 1, dia: 96, category: "SONSTIGES" },
+        { id: "kopfgeld", name: { de: "Kopfgeld (Bounty)", en: "Bounty" }, menge: 1, dia: 64, category: "SONSTIGES" },
+        { id: "enderperlen", name: { de: "Enderperlen (Ender Pearls)", en: "Ender Pearls" }, menge: 16, dia: 2, category: "SONSTIGES" },
+        { id: "endertruhe", name: { de: "Endertruhe (Ender Chest)", en: "Ender Chest" }, menge: 1, dia: 16, category: "SONSTIGES" }
     ];
 
     function getLangFromUrl() {
@@ -652,7 +680,7 @@
     function renderCategories() {
         const t = translations[currentLang];
         const categoryBar = document.getElementById('categoryBar');
-        const categories = ["ALL", "BAU-MATERIAL", "ERZE", "Book", "LOCATION", "SONSTIGES"];
+        const categories = ["ALL", "BAU-MATERIAL", "ERZE", "Book", "TRAENKE", "LOCATION", "SONSTIGES"];
 
         categoryBar.innerHTML = '';
         categories.forEach(cat => {
@@ -682,7 +710,7 @@
             return;
         }
 
-        const categoryOrder = ["BAU-MATERIAL", "ERZE", "Book", "LOCATION", "SONSTIGES"];
+        const categoryOrder = ["BAU-MATERIAL", "ERZE", "Book", "TRAENKE", "LOCATION", "SONSTIGES"];
 
         categoryOrder.forEach(cat => {
             const catItems = list.filter(item => item.category === cat);
@@ -818,12 +846,11 @@
         cartList.appendChild(totalLi);
     }
 
-    // Bei Browser-Vor/Zurück-Aktionen Sprache aus der URL laden
     window.addEventListener('popstate', () => {
         setLanguage(getLangFromUrl(), false);
     });
 
-    // Beim ersten Aufrufen der Seite Sprache direkt aus der URL lesen
+    // Start-Initialisierung
     setLanguage(getLangFromUrl(), false);
 </script>
 
