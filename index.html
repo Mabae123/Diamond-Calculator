@@ -372,6 +372,47 @@
             color: var(--accent-bright);
         }
 
+        .export-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .export-box input {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .export-box .btn {
+            flex: 1;
+            min-width: 200px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .export-box .btn:hover {
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+        }
+
+        .toast-msg {
+            display: none;
+            background-color: var(--success);
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .cart-list {
             list-style: none;
             padding: 0;
@@ -508,7 +549,18 @@
                 🗑️ Leeren
             </button>
         </div>
+
         <ul class="cart-list" id="cartList"></ul>
+
+        <div id="toastMsg" class="toast-msg" style="margin-top: 15px;"></div>
+
+        <!-- Kundenname & Tabelle-Kopieren Button (unter der Gesamtsumme) -->
+        <div class="export-box" style="margin-top: 15px; margin-bottom: 0;">
+            <input type="text" id="clientName" placeholder="Dein Name">
+            <button class="btn" onclick="copyForSheet()" id="btnCopySheet">
+                📋 Für Tabelle kopieren
+            </button>
+        </div>
     </div>
 </div>
 
@@ -534,6 +586,11 @@
             btnAddToCart: "➕ Zum Warenkorb hinzufügen",
             totalLbl: "Gesamtwert in Diamanten:",
             cartTitle: "🛒 Warenkorb (Mehrere Items)",
+            btnClearCart: "🗑️ Leeren",
+            clientPh: "Dein Name",
+            btnCopySheet: "📋 Für Tabelle kopieren",
+            copiedMsg: "✅ In Zwischenablage kopiert! Jetzt in Tabellenspalte A einfügen.",
+            emptyCartMsg: "Der Warenkorb ist leer!",
             rateLbl: "Wechselkurs",
             pcs: "Stk.",
             perPiece: "Dia/Stk.",
@@ -565,6 +622,11 @@
             btnAddToCart: "➕ Add to Cart",
             totalLbl: "Total Value in Diamonds:",
             cartTitle: "🛒 Shopping Cart (Multiple Items)",
+            btnClearCart: "🗑️ Clear",
+            clientPh: "Your Name",
+            btnCopySheet: "📋 Copy for Spreadsheet",
+            copiedMsg: "✅ Copied to clipboard! Ready to paste into Column A of your Sheet.",
+            emptyCartMsg: "The shopping cart is empty!",
             rateLbl: "Exchange Rate",
             pcs: "pcs",
             perPiece: "Dia/pc",
@@ -687,6 +749,9 @@
         document.getElementById('btnAddToCart').innerText = t.btnAddToCart;
         document.getElementById('lblTotal').innerText = t.totalLbl;
         document.getElementById('lblCartTitle').innerText = t.cartTitle;
+        document.getElementById('btnClearCart').innerHTML = t.btnClearCart;
+        document.getElementById('clientName').placeholder = t.clientPh;
+        document.getElementById('btnCopySheet').innerText = t.btnCopySheet;
 
         renderCategories();
         filterItems();
@@ -834,6 +899,7 @@
             name: item.name,
             amount: amount,
             unitType: unitLabel,
+            totalItems: totalItems,
             dias: totalDias
         });
 
@@ -848,6 +914,56 @@
     function clearCart() {
         cart = [];
         updateCartUI();
+    }
+
+    function copyForSheet() {
+        const t = translations[currentLang];
+        if (cart.length === 0) {
+            showToast(t.emptyCartMsg, true);
+            return;
+        }
+
+        const clientInput = document.getElementById('clientName').value.trim();
+        const clientName = clientInput || (currentLang === 'de' ? 'Unbekannt' : 'Unknown');
+        const today = new Date().toLocaleDateString(currentLang === 'de' ? 'de-DE' : 'en-US');
+
+        // Erstelle Tab-getrennte Zeilen gemäß Sheet-Struktur:
+        // CLIENT | DATUM | MATERIAL | MENGE | DIA
+        const rows = cart.map(item => {
+            const itemName = item.name[currentLang] || item.name.de;
+            const mengeVal = item.totalItems; // Einfache Zahl für Tabellen-Formeln
+            const diaFormatted = item.dias.toFixed(2).replace('.', ',');
+            return `${clientName}\t${today}\t${itemName}\t${mengeVal}\t${diaFormatted}`;
+        });
+
+        const copyText = rows.join('\n');
+
+        // Clipboard via verdeckter Textarea (Sicher in iFrames)
+        const textarea = document.createElement('textarea');
+        textarea.value = copyText;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        
+        try {
+            document.execCommand('copy');
+            showToast(t.copiedMsg, false);
+        } catch (err) {
+            showToast("Fehler beim Kopieren", true);
+        } finally {
+            document.body.removeChild(textarea);
+        }
+    }
+
+    function showToast(msg, isError) {
+        const toast = document.getElementById('toastMsg');
+        toast.innerText = msg;
+        toast.style.backgroundColor = isError ? 'var(--danger)' : 'var(--success)';
+        toast.style.display = 'block';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3500);
     }
 
     function updateCartUI() {
@@ -896,6 +1012,3 @@
     // Start-Initialisierung
     setLanguage(getLangFromUrl(), false);
 </script>
-
-</body>
-</html>
